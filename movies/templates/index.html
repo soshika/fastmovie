@@ -21,8 +21,8 @@
 	<link rel="stylesheet" href="{% static 'css/main.css' %}">
 
 	<!-- Favicons -->
-	<link rel="icon" type="image/png" href="icon/favicon-32x32.png" sizes="32x32">
-	<link rel="apple-touch-icon" href="icon/favicon-32x32.png">
+	<link rel="icon" type="image/png" href="{% static 'icon/favicon-32x32.png' %}" sizes="32x32">
+	<link rel="apple-touch-icon" href="{% static 'icon/favicon-32x32.png' %}">
 
 	<meta name="description" content="">
 	<meta name="keywords" content="">
@@ -56,7 +56,7 @@
 								<a class="dropdown-toggle header__nav-link" href="#" role="button" id="dropdownMenuCatalog" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Movies <i class="icon ion-ios-arrow-down"></i></a>
 
 								<ul class="dropdown-menu header__dropdown-menu" aria-labelledby="dropdownMenuCatalog">
-									<li><a href="catalog.html">Catalog style 1</a></li>
+									<li><a href="{% url 'explore-movies' %}">Explore</a></li>
 									<li><a href="catalog2.html">Catalog style 2</a></li>
 									<li><a href="details.html">Details style 1</a></li>
 									<li><a href="details2.html">Details style 2</a></li>
@@ -364,42 +364,10 @@
 								</div>
 
 								<ul class="filter__item-menu dropdown-menu scrollbar-dropdown" aria-labelledby="filter-genre">
-									<li>Action/Adventure</li>
-									<li>Animals</li>
-									<li>Animation</li>
-									<li>Biography</li>
-									<li>Comedy</li>
-									<li>Cooking</li>
-									<li>Dance</li>
-									<li>Documentary</li>
-									<li>Drama</li>
-									<li>Education</li>
-									<li>Entertainment</li>
-									<li>Family</li>
-									<li>Fantasy</li>
-									<li>History</li>
-									<li>Horror</li>
-									<li>Independent</li>
-									<li>International</li>
-									<li>Kids</li>
-									<li>Kids & Family</li>
-									<li>Medical</li>
-									<li>Military/War</li>
-									<li>Music</li>
-									<li>Musical</li>
-									<li>Mystery/Crime</li>
-									<li>Nature</li>
-									<li>Paranormal</li>
-									<li>Politics</li>
-									<li>Racing</li>
-									<li>Romance</li>
-									<li>Sci-Fi/Horror</li>
-									<li>Science</li>
-									<li>Science Fiction</li>
-									<li>Science/Nature</li>
-									<li>Spanish</li>
-									<li>Travel</li>
-									<li>Western</li>
+                                    {% for g in generes %}
+                                        <li>{{ g|lower|capfirst }}</li>
+                                    {% endfor %}
+
 								</ul>
 							</div>
 							<!-- end filter item -->
@@ -413,42 +381,9 @@
 								</div>
 
 								<ul class="filter__item-menu dropdown-menu scrollbar-dropdown" aria-labelledby="filter-genre">
-									<li>India</li>
-									<li>China</li>
-									<li>Japan</li>
-									<li>France</li>
-									<li>Spain</li>
-									<li>South Korea</li>
-									<li>Italy</li>
-									<li>German</li>
-									<li>UK</li>
-									<li>Education</li>
-									<li>Entertainment</li>
-									<li>Family</li>
-									<li>Fantasy</li>
-									<li>History</li>
-									<li>Horror</li>
-									<li>Independent</li>
-									<li>International</li>
-									<li>Kids</li>
-									<li>Kids & Family</li>
-									<li>Medical</li>
-									<li>Military/War</li>
-									<li>Music</li>
-									<li>Musical</li>
-									<li>Mystery/Crime</li>
-									<li>Nature</li>
-									<li>Paranormal</li>
-									<li>Politics</li>
-									<li>Racing</li>
-									<li>Romance</li>
-									<li>Sci-Fi/Horror</li>
-									<li>Science</li>
-									<li>Science Fiction</li>
-									<li>Science/Nature</li>
-									<li>Spanish</li>
-									<li>Travel</li>
-									<li>Western</li>
+									{% for c in countries %}
+                                        <li>{{ c.name|lower|capfirst }}</li>
+                                    {% endfor %}
 								</ul>
 							</div>
 
@@ -1625,30 +1560,30 @@
 
 	<!-- footer -->
 	<footer class="footer">
-		<div class="container">
-			<div class="row">
-				<div class="col-12">
-					<div class="footer__content">
-						<a href="index.html" class="footer__logo" style="width: 150px;">
-							<img src="{% static 'img/logo.svg' %}" alt="">
-						</a>
+        <div class="container">
+            <div class="row">
+                <div class="col-12">
+                    <div class="footer__content">
+                        <a href="index.html" class="footer__logo" style="width: 150px;">
+                            <img src="{% static 'img/logo.svg' %}" alt="">
+                        </a>
 
-						<span class="footer__copyright">© FastMovie.online, {% now 'Y' %} Presents <br> Create by <a href="https://themeforest.net/user/dmitryvolkov/portfolio" target="_blank">Dmitry Volkov</a></span>
+                        <span class="footer__copyright">© FastMovie.online, {% now 'Y' %} Presents <br> Create by <a href="https://themeforest.net/user/dmitryvolkov/portfolio" target="_blank">Dmitry Volkov</a></span>
 
-						<nav class="footer__nav">
-							<a href="{% url 'about' %}">About Us</a>
-							<a href="{% url 'contact' %}">Contacts</a>
-							<a href="{% url 'privacy' %}">Privacy policy</a>
-						</nav>
+                        <nav class="footer__nav">
+                            <a href="{% url 'about' %}">About Us</a>
+                            <a href="{% url 'contact' %}">Contacts</a>
+                            <a href="{% url 'privacy' %}">Privacy policy</a>
+                        </nav>
 
-						<button class="footer__back" type="button">
-							<i class="icon ion-ios-arrow-round-up"></i>
-						</button>
-					</div>
-				</div>
-			</div>
-		</div>
-	</footer>
+                        <button class="footer__back" type="button">
+                            <i class="icon ion-ios-arrow-round-up"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
 	<!-- end footer -->
 
 	<!-- JS -->
