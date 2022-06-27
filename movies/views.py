@@ -16,8 +16,12 @@ def home_page_view(request):
 
     countries = models.Countries.objects.all()
 
+    movie = models.Movie.objects.first()
+
     return render(request, 'index.html', {'generes': generes,
-                                          'countries': countries})
+                                          'countries': countries,
+                                          'movie': movie,
+                                          'range': range(8)})
 
 
 def movie_detail(request):
@@ -43,6 +47,23 @@ class AboutPageView(TemplateView):
 
 class PrivacyPageView(TemplateView):
     template_name = 'privacy.html'
+
+
+def contact_view(request):
+    if request.method == 'POST':
+        name = request.POST['name'] or None
+        email = request.POST['email'] or None
+        subject = request.POST['subject'] or None
+        message = request.POST['message']
+
+        contact = models.Contact()
+        contact.name = name
+        contact.email = email
+        contact.subject = subject
+        contact.message = message
+        contact.save()
+
+    return render(request, 'contact.html')
 
 
 class ContactPageView(TemplateView):

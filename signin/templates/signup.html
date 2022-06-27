@@ -32,45 +32,51 @@
 
 <body class="body">
 
-	<div class="sign section--bg" data-bg="{% static 'img/section/section.jpg' %}">
+	<div class="sign section--bg" data-bg="{% static 'img/section/sign_BG.webp' %}">
 		<div class="container">
 			<div class="row">
 				<div class="col-12">
 					<div class="sign__content">
 						<!-- registration form -->
-						<form action="#" class="sign__form">
-							<a href="index.html" class="sign__logo">
-								<img src="{% static 'img/logo.png' %}" height="33" width="100%"  alt="">
+						<form action="{% url 'signup' %}" name="form" class="sign__form" method="post">
+                            <a href="{% url 'home' %}" class="sign__logo">
+								<img src="{% static 'img/logo.png' %}"  style="height: 50px; width: 250px;" alt="">
 							</a>
 
+                            {% csrf_token %}
 							<div class="sign__group">
-								<input type="text" class="sign__input" placeholder="Name">
+								<input type="text" class="sign__input" name="username" placeholder="Username">
 							</div>
 
 							<div class="sign__group">
-								<input type="text" class="sign__input" placeholder="Email">
+								<input type="email" class="sign__input" name="email" placeholder="Email">
 							</div>
 
 							<div class="sign__group">
-								<input type="password" class="sign__input" placeholder="Password">
+								<input type="password" class="sign__input" name="password" placeholder="Password">
+							</div>
+
+                            <div class="sign__group">
+								<input type="password" class="sign__input" name="confrim_password" placeholder="Confirm Password">
 							</div>
 
 							<div class="sign__group sign__group--checkbox">
 								<input id="remember" name="remember" type="checkbox" checked="checked">
-								<label for="remember">I agree to the <a href="privacy.html">Privacy Policy</a></label>
+								<label for="remember">I agree to the <a href="{% url 'privacy' %}">Privacy Policy</a></label>
 							</div>
 
-							<button class="sign__btn" type="button">Sign up</button>
+							<button class="sign__btn" type="submit" value="sign_up">Sign up</button>
 
 							<span class="sign__delimiter">or</span>
 
 							<div class="sign__social" style="width: 100%;">
                                 <a class="fb" href="#" style="background-color: whitesmoke; width: 100%;"><img src="{% static 'img/metamask.webp' %}" height="auto" width="45%" /> </a>
-
-
 							</div>
 
 							<span class="sign__text">Already have an account? <a href="{% url 'signin' %}">Sign in!</a></span>
+{#							<p style="color: whitesmoke; text-align: center;">#}
+{#                                please make sure Use lower and uppercase and also digits in your password#}
+{#                            </p>#}
 						</form>
 						<!-- registration form -->
 					</div>

@@ -17,8 +17,11 @@ from django.contrib import admin
 from django.urls import path
 from django.conf.urls import include
 
+from signin.views import users_verify_view
+
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('movies.urls')), # tell django to read urls.py in movies app
-    path('auth/', include('signin.urls'))
+    path('auth/', include('signin.urls')),
+    path('users/verify/<str:token>', users_verify_view)
 ]

@@ -23,3 +23,17 @@ class Genres(models.Model):
 class Countries(models.Model):
     name = models.CharField(max_length=32, verbose_name=_('Name'))
     img = models.CharField(max_length=255, verbose_name=_("img"))
+
+
+class Contact(models.Model):
+    name = models.CharField(max_length=128, verbose_name=_('Name'))
+    email = models.EmailField(max_length=128, verbose_name=_('Email'))
+    subject = models.CharField(max_length=255, verbose_name=_('Subject'))
+    message = models.TextField(verbose_name=_('Message'))
+
+    def __str__(self):
+        return '{} - {}'.format(self.name, self.email)
+
+    class Meta:
+        verbose_name = _('Contact')
+        verbose_name_plural = _('Contacts')

@@ -684,7 +684,7 @@ ul {
 }
 .home__title {
   color: #fff;
-  text-transform: uppercase;
+  text-transform: capitalize;
   font-weight: 300;
   font-size: 32px;
   line-height: 42px;
@@ -729,7 +729,7 @@ ul {
   bottom: 0;
   left: 0;
   display: block;
-  background: url("../img/home/home__bg.jpg") no-repeat center/cover;
+  background: url("../img/section/1.jpg") no-repeat center/cover;
   opacity: 0.1;
 }
 @media (min-width: 768px) {

@@ -205,19 +205,21 @@
 
 				<!-- player -->
 				<div class="col-12 col-xl-6">
-					<video controls crossorigin playsinline poster="https://cdn.plyr.io/static/demo/View_From_A_Blue_Moon_Trailer-HD.jpg" id="player">
+					<video controls crossorigin playsinline poster="{{ movie.url }}" id="player" controls>
 						<!-- Video files -->
-						<source src="https://www.youtube.com/watch?v=K1FPUNBxFTE" type="video/mp4" size="480">
-						<source src="https://www.youtube.com/watch?v=K1FPUNBxFTE" type="video/mp4" size="720">
-						<source src="https://www.youtube.com/watch?v=K1FPUNBxFTE" type="video/mp4" size="1080">
-
-						<!-- Caption files -->
-						<track kind="captions" label="English" srclang="en" src="https://cdn.plyr.io/static/demo/View_From_A_Blue_Moon_Trailer-HD.en.vtt"
-						    default>
-						<track kind="captions" label="Français" srclang="fr" src="https://cdn.plyr.io/static/demo/View_From_A_Blue_Moon_Trailer-HD.fr.vtt">
+						<source src="{{ movie.url }}" type="video/mp4" size="480">
+						<source src="{{ movie.url }}" type="video/mp4" size="720">
+						<source src="{{ movie.url }}" type="video/mp4" size="1080">
+{##}
+{#						<!-- Caption files -->#}
+						<track kind="subtitles" label="English" srclang="en" src="https://cdn.plyr.io/static/demo/View_From_A_Blue_Moon_Trailer-HD.en.vtt" default>
+						<track kind="subtitles" label="Français" srclang="fr" src="https://cdn.plyr.io/static/demo/View_From_A_Blue_Moon_Trailer-HD.fr.vtt">
+{##}
+{#                        <track kind="captions" label="English" srclang="en" src="https://cdn.plyr.io/static/demo/View_From_A_Blue_Moon_Trailer-HD.en.vtt" default>#}
+{#						<track kind="captions" label="Français" srclang="fr" src="https://cdn.plyr.io/static/demo/View_From_A_Blue_Moon_Trailer-HD.fr.vtt">#}
 
 						<!-- Fallback for browsers that don't support the <video> element -->
-						<a href="https://www.youtube.com/watch?v=K1FPUNBxFTE" download>Download</a>
+						<a href="{{ movie.url }}" download>Download</a>
 					</video>
 				</div>
 				<!-- end player -->

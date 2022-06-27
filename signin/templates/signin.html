@@ -32,23 +32,24 @@
 
 <body class="body">
 
-	<div class="sign section--bg" data-bg="{% static 'img/section/section.jpg' %}">
+	<div class="sign section--bg" data-bg="{% static 'img/section/sign_BG.webp' %}">
 		<div class="container">
 			<div class="row">
 				<div class="col-12">
 					<div class="sign__content">
 						<!-- authorization form -->
-						<form action="#" class="sign__form">
-							<a href="index.html" class="sign__logo">
-								<img src="{% static 'img/logo.svg' %}" alt="">
+						<form action="{% url 'signin' %}" method="post" class="sign__form">
+                            {% csrf_token %}
+							<a href="{% url 'home' %}" class="sign__logo">
+								<img src="{% static 'img/logo.webp' %}" alt="">
 							</a>
 
 							<div class="sign__group">
-								<input type="text" class="sign__input" placeholder="Email">
+								<input type="email" class="sign__input" name="email" placeholder="Email">
 							</div>
 
 							<div class="sign__group">
-								<input type="password" class="sign__input" placeholder="Password">
+								<input type="password" class="sign__input" name="password" placeholder="Password">
 							</div>
 
 							<div class="sign__group sign__group--checkbox">
@@ -56,7 +57,7 @@
 								<label for="remember">Remember Me</label>
 							</div>
 
-							<button class="sign__btn" type="button">Sign in</button>
+							<button class="sign__btn" type="submit">Sign in</button>
 
 							<span class="sign__delimiter">or</span>
 
