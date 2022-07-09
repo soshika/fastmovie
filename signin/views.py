@@ -1,5 +1,6 @@
 import requests
 import json
+import sqlite3
 
 from django.shortcuts import render, redirect
 from django.views.generic import TemplateView
@@ -27,7 +28,7 @@ def signup_view(request):
         post_data = {'username': username,
                      'email': email,
                      'password': password}
-        response = requests.post('http://localhost:9092/users', json=post_data)
+        response = requests.post('https://45.148.120.241:9092/users', json=post_data)
         content_byte = response.content
         content = json.loads(content_byte.decode('utf-8'))
         if content['header']['status'] == 200:
@@ -52,7 +53,7 @@ def signin_view(request):
         post_data = {'email': email,
                      'password': password}
 
-        response = requests.post('http://localhost:9092/users/login', json=post_data)
+        response = requests.post('http://45.148.120.241:9092/users/login', json=post_data)
         content_byte = response.content
         content = json.loads(content_byte.decode('utf-8'))
 
@@ -68,7 +69,7 @@ def forget_password_view(request):
         email = request.POST['email'] or None
         post_data = {'email': email}
 
-        response = requests.post('http://localhost:9092/users/forget', json=post_data)
+        response = requests.post('http://45.148.120.241:9092/users/forget', json=post_data)
         content_byte = response.content
         content = json.loads(content_byte.decode('utf-8'))
 
@@ -80,3 +81,22 @@ def forget_password_view(request):
 
 class SignInView(TemplateView):
     template_name = 'signin.html'
+
+
+def profile_view(request):
+    con = sqlite3.connect('/Users/soshika/Downloads/fastmovie-db-main-7/fastmovie-online.db')
+    cur = con.cursor()
+
+    select_query_sql = '''SELECT * FROM telegram'''
+
+    def selectTable():
+        con = sqlite3.connect('fastmovie-online.db')
+        cur = con.cursor()
+
+        cur.execute("SELECT * FROM cnama")
+
+        rows = cur.fetchall()
+
+        return rows
+
+    return render(request, "profile.html")

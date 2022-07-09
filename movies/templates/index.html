@@ -38,8 +38,8 @@
 				<div class="col-12">
 					<div class="header__content">
 						<!-- header logo -->
-						<a href="index.html" class="header__logo" style="width: 170px;">
-							<img src="{% static 'img/logo.webp' %}"  alt="" style="margin-bottom: 10px;margin-right: 10px">
+						<a href="{% url 'home' %}" class="header__logo" style="width: 175px;">
+							<img src="{% static 'img/logo.svg' %}"  alt="" style="margin-bottom: 10px;margin-right: 10px">
 						</a>
 						<!-- end header logo -->
 
@@ -58,6 +58,7 @@
 								<ul class="dropdown-menu header__dropdown-menu" aria-labelledby="dropdownMenuCatalog">
 									<li><a href="{% url 'explore-movies' %}">Explore</a></li>
                                     <li><a href="{% url 'explore-movies' %}">Top 250 IMDB</a></li>
+									<li><a href="{% url 'explore-movies' %}">Animations</a></li>
 
 								</ul>
 							</li>
@@ -85,14 +86,13 @@
 						<!-- end header nav -->
 
                         <div style="margin-right: -380px; margin-left: 60px;">
-                            <form action="#" class="header__search">
-                                <input class="header__search-input" type="text" placeholder="Upload Movie">
-                                <button class="header__search-button" type="button">
+                            <form action="#" method="post" class="header__search">
+                                {% csrf_token %}
+                                <input class="header__search-input" type="text" name="query" placeholder="Upload Movie">
+                                <button class="header__search-button" type="submit">
                                     <img src="{% static 'img/extra/upload.png' %}" style="height: 22px; width: 24px;" />
                                 </button>
-                                <button class="header__search-close" type="button">
 
-                                </button>
                             </form>
 
                             <button class="header__search-btn" type="button">
@@ -153,19 +153,25 @@
 
 				<div class="col-12">
 					<div class="owl-carousel home__carousel home__carousel--default">
-                        {% for i in range %}
+                        {% for movie in trending %}
                             <div class="card card--big">
                                 <div class="card__cover">
-                                    <img src="{{movie.thumbnail}}" alt="">
-                                    <a href="{% url 'movie-detail' %} " class="card__play">
+                                    <img src="{{movie.poster}}" alt="{{ movie.title }}" style="width: 188px; height: 280px;">
+                                    <a href="details.html" class="card__play">
                                         <i class="icon ion-ios-play"></i>
                                     </a>
-                                    <span class="card__rate card__rate--green">8.4</span>
+                                    {% if movie.imdbRating >= 7.5 %}
+                                        <span class="card__rate card__rate--green">{{ movie.imdbRating }}</span>
+                                    {% elif movie.imdbRating <= 7.5 and movie.imdbRating >= 5.0 %}
+                                        <span class="card__rate card__rate--yellow">{{ movie.imdbRating }}</span>
+                                    {% else %}
+                                        <span class="card__rate card__rate--red">{{ movie.imdbRating }}</span>
+                                    {% endif %}
                                 </div>
                                 <div class="card__content">
-                                    <h3 class="card__title"><a href="details.html">{{ movie.name }}</a></h3>
+                                    <h3 class="card__title"><a href="details.html">{{ movie.title }}</a></h3>
                                     <span class="card__category">
-                                        <a href="#">{{ movie.generes }}</a>
+                                        <a href="#">{{ movie.genre }}</a>
                                     </span>
                                 </div>
                             </div>
@@ -272,12 +278,13 @@
 							<!-- end filter item -->
 						</div>
 
-                        <form action="#" class="header__search" style="margin-left: 35px;">
-                            <input class="header__search-input" type="text" placeholder="Search...">
-                            <button class="header__search-button" type="button">
+                        <form action="{% url 'search' %}" method="post" class="header__search" style="margin-left: 35px;">
+                            {% csrf_token %}
+                            <input class="header__search-input" type="text" name="query" placeholder="Search...">
+                            <button class="header__search-button" type="submit">
                                 <i class="icon ion-ios-search"></i>
                             </button>
-                            <button class="header__search-close" type="button">
+                            <button class="header__search-close" type="submit">
                                 <i class="icon ion-md-close"></i>
                             </button>
                         </form>
@@ -301,379 +308,32 @@
 		<div class="container">
 			<div class="row row--grid">
 				<!-- card -->
-				<div class="col-6 col-sm-4 col-md-3 col-xl-2">
-					<div class="card">
-						<div class="card__cover">
-							<img src="{% static 'img/covers/cover.jpg' %}" alt="">
-							<a href="details.html" class="card__play">
-								<i class="icon ion-ios-play"></i>
-							</a>
-							<span class="card__rate card__rate--green">8.4</span>
-						</div>
-						<div class="card__content">
-							<h3 class="card__title"><a href="details.html">I Dream in Another Language</a></h3>
-							<span class="card__category">
-								<a href="#">Action</a>
-								<a href="#">Triler</a>
-							</span>
-						</div>
-					</div>
-				</div>
-				<!-- end card -->
+                {% for movie in trending %}
+                    <div class="col-6 col-sm-4 col-md-3 col-xl-2">
+                        <div class="card">
+                            <div class="card__cover">
+                                <img src="{{ movie.poster }}" alt="{{ movie.title }}" style="width: 100%; height: 260px;">
+                                <a href="{% url 'movie-detail' movie_name=movie.title movie_year=movie.year %}" class="card__play">
+                                    <i class="icon ion-ios-play"></i>
+                                </a>
+                                {% if movie.imdbRating >= 7.5 %}
+                                    <span class="card__rate card__rate--green">{{ movie.imdbRating }}</span>
+                                {% elif movie.imdbRating <= 7.5 and movie.imdbRating >= 5.0 %}
+                                    <span class="card__rate card__rate--yellow">{{ movie.imdbRating }}</span>
+                                {% else %}
+                                    <span class="card__rate card__rate--red">{{ movie.imdbRating }}</span>
+                                {% endif %}
 
-				<!-- card -->
-				<div class="col-6 col-sm-4 col-md-3 col-xl-2">
-					<div class="card">
-						<div class="card__cover">
-							<img src="{% static 'img/covers/cover2.jpg' %}" alt="">
-							<a href="details.html" class="card__play">
-								<i class="icon ion-ios-play"></i>
-							</a>
-							<span class="card__rate card__rate--green">7.1</span>
-						</div>
-						<div class="card__content">
-							<h3 class="card__title"><a href="details.html">Benched</a></h3>
-							<span class="card__category">
-								<a href="#">Comedy</a>
-							</span>
-						</div>
-					</div>
-				</div>
-				<!-- end card -->
-
-				<!-- card -->
-				<div class="col-6 col-sm-4 col-md-3 col-xl-2">
-					<div class="card">
-						<div class="card__cover">
-							<img src="{% static 'img/covers/cover3.jpg' %}" alt="">
-							<a href="details.html" class="card__play">
-								<i class="icon ion-ios-play"></i>
-							</a>
-							<span class="card__rate card__rate--red">6.3</span>
-						</div>
-						<div class="card__content">
-							<h3 class="card__title"><a href="details.html">Whitney</a></h3>
-							<span class="card__category">
-								<a href="#">Romance</a>
-								<a href="#">Drama</a>
-								<a href="#">Music</a>
-							</span>
-						</div>
-					</div>
-				</div>
-				<!-- end card -->
-
-				<!-- card -->
-				<div class="col-6 col-sm-4 col-md-3 col-xl-2">
-					<div class="card">
-						<div class="card__cover">
-							<img src="{% static 'img/covers/cover4.jpg' %}" alt="">
-							<a href="details.html" class="card__play">
-								<i class="icon ion-ios-play"></i>
-							</a>
-							<span class="card__rate card__rate--yellow">6.9</span>
-						</div>
-						<div class="card__content">
-							<h3 class="card__title"><a href="details.html">Blindspotting</a></h3>
-							<span class="card__category">
-								<a href="#">Comedy</a>
-								<a href="#">Drama</a>
-							</span>
-						</div>
-					</div>
-				</div>
-				<!-- end card -->
-
-				<!-- card -->
-				<div class="col-6 col-sm-4 col-md-3 col-xl-2">
-					<div class="card">
-						<div class="card__cover">
-							<img src="{% static 'img/covers/cover5.jpg' %}" alt="">
-							<a href="details.html" class="card__play">
-								<i class="icon ion-ios-play"></i>
-							</a>
-							<span class="card__rate card__rate--green">8.4</span>
-						</div>
-						<div class="card__content">
-							<h3 class="card__title"><a href="details.html">I Dream in Another Language</a></h3>
-							<span class="card__category">
-								<a href="#">Action</a>
-								<a href="#">Triler</a>
-							</span>
-						</div>
-					</div>
-				</div>
-				<!-- end card -->
-
-				<!-- card -->
-				<div class="col-6 col-sm-4 col-md-3 col-xl-2">
-					<div class="card">
-						<div class="card__cover">
-							<img src="{% static 'img/covers/cover6.jpg' %}" alt="">
-							<a href="details.html" class="card__play">
-								<i class="icon ion-ios-play"></i>
-							</a>
-							<span class="card__rate card__rate--green">7.1</span>
-						</div>
-						<div class="card__content">
-							<h3 class="card__title"><a href="details.html">Benched</a></h3>
-							<span class="card__category">
-								<a href="#">Comedy</a>
-							</span>
-						</div>
-					</div>
-				</div>
-				<!-- end card -->
-
-				<!-- card -->
-				<div class="col-6 col-sm-4 col-md-3 col-xl-2">
-					<div class="card">
-						<div class="card__cover">
-							<img src="{% static 'img/covers/cover7.jpg' %}" alt="">
-							<a href="details.html" class="card__play">
-								<i class="icon ion-ios-play"></i>
-							</a>
-							<span class="card__rate card__rate--green">7.1</span>
-						</div>
-						<div class="card__content">
-							<h3 class="card__title"><a href="details.html">Benched</a></h3>
-							<span class="card__category">
-								<a href="#">Comedy</a>
-							</span>
-						</div>
-					</div>
-				</div>
-				<!-- end card -->
-
-				<!-- card -->
-				<div class="col-6 col-sm-4 col-md-3 col-xl-2">
-					<div class="card">
-						<div class="card__cover">
-							<img src="{% static 'img/covers/cover8.jpg' %}" alt="">
-							<a href="details.html" class="card__play">
-								<i class="icon ion-ios-play"></i>
-							</a>
-							<span class="card__rate card__rate--red">5.5</span>
-						</div>
-						<div class="card__content">
-							<h3 class="card__title"><a href="details.html">I Dream in Another Language</a></h3>
-							<span class="card__category">
-								<a href="#">Action</a>
-								<a href="#">Triler</a>
-							</span>
-						</div>
-					</div>
-				</div>
-				<!-- end card -->
-
-				<!-- card -->
-				<div class="col-6 col-sm-4 col-md-3 col-xl-2">
-					<div class="card">
-						<div class="card__cover">
-							<img src="{% static 'img/covers/cover9.jpg' %}" alt="">
-							<a href="details.html" class="card__play">
-								<i class="icon ion-ios-play"></i>
-							</a>
-							<span class="card__rate card__rate--yellow">6.7</span>
-						</div>
-						<div class="card__content">
-							<h3 class="card__title"><a href="details.html">Blindspotting</a></h3>
-							<span class="card__category">
-								<a href="#">Comedy</a>
-								<a href="#">Drama</a>
-							</span>
-						</div>
-					</div>
-				</div>
-				<!-- end card -->
-
-				<!-- card -->
-				<div class="col-6 col-sm-4 col-md-3 col-xl-2">
-					<div class="card">
-						<div class="card__cover">
-							<img src="{% static 'img/covers/cover10.jpg' %}" alt="">
-							<a href="details.html" class="card__play">
-								<i class="icon ion-ios-play"></i>
-							</a>
-							<span class="card__rate card__rate--red">5.6</span>
-						</div>
-						<div class="card__content">
-							<h3 class="card__title"><a href="details.html">Whitney</a></h3>
-							<span class="card__category">
-								<a href="#">Romance</a>
-								<a href="#">Drama</a>
-								<a href="#">Music</a>
-							</span>
-						</div>
-					</div>
-				</div>
-				<!-- end card -->
-
-				<!-- card -->
-				<div class="col-6 col-sm-4 col-md-3 col-xl-2">
-					<div class="card">
-						<div class="card__cover">
-							<img src="{% static 'img/covers/cover11.jpg' %}" alt="">
-							<a href="details.html" class="card__play">
-								<i class="icon ion-ios-play"></i>
-							</a>
-							<span class="card__rate card__rate--green">9.2</span>
-						</div>
-						<div class="card__content">
-							<h3 class="card__title"><a href="details.html">Benched</a></h3>
-							<span class="card__category">
-								<a href="#">Comedy</a>
-							</span>
-						</div>
-					</div>
-				</div>
-				<!-- end card -->
-
-				<!-- card -->
-				<div class="col-6 col-sm-4 col-md-3 col-xl-2">
-					<div class="card">
-						<div class="card__cover">
-							<img src="{% static 'img/covers/cover12.jpg' %}" alt="">
-							<a href="details.html" class="card__play">
-								<i class="icon ion-ios-play"></i>
-							</a>
-							<span class="card__rate card__rate--green">8.4</span>
-						</div>
-						<div class="card__content">
-							<h3 class="card__title"><a href="details.html">I Dream in Another Language</a></h3>
-							<span class="card__category">
-								<a href="#">Action</a>
-								<a href="#">Triler</a>
-							</span>
-						</div>
-					</div>
-				</div>
-				<!-- end card -->
-
-				<!-- card -->
-				<div class="col-6 col-sm-4 col-md-3 col-xl-2">
-					<div class="card">
-						<div class="card__cover">
-							<img src="{% static 'img/covers/cover13.jpg' %}" alt="">
-							<a href="details.html" class="card__play">
-								<i class="icon ion-ios-play"></i>
-							</a>
-							<span class="card__rate card__rate--green">8.0</span>
-						</div>
-						<div class="card__content">
-							<h3 class="card__title"><a href="details.html">I Dream in Another Language</a></h3>
-							<span class="card__category">
-								<a href="#">Action</a>
-								<a href="#">Triler</a>
-							</span>
-						</div>
-					</div>
-				</div>
-				<!-- end card -->
-
-				<!-- card -->
-				<div class="col-6 col-sm-4 col-md-3 col-xl-2">
-					<div class="card">
-						<div class="card__cover">
-							<img src="{% static 'img/covers/cover14.jpg' %}" alt="">
-							<a href="details.html" class="card__play">
-								<i class="icon ion-ios-play"></i>
-							</a>
-							<span class="card__rate card__rate--green">7.2</span>
-						</div>
-						<div class="card__content">
-							<h3 class="card__title"><a href="details.html">Benched</a></h3>
-							<span class="card__category">
-								<a href="#">Comedy</a>
-							</span>
-						</div>
-					</div>
-				</div>
-				<!-- end card -->
-
-				<!-- card -->
-				<div class="col-6 col-sm-4 col-md-3 col-xl-2">
-					<div class="card">
-						<div class="card__cover">
-							<img src="{% static 'img/covers/cover15.jpg' %}" alt="">
-							<a href="details.html" class="card__play">
-								<i class="icon ion-ios-play"></i>
-							</a>
-							<span class="card__rate card__rate--yellow">5.9</span>
-						</div>
-						<div class="card__content">
-							<h3 class="card__title"><a href="details.html">Whitney</a></h3>
-							<span class="card__category">
-								<a href="#">Romance</a>
-								<a href="#">Drama</a>
-								<a href="#">Music</a>
-							</span>
-						</div>
-					</div>
-				</div>
-				<!-- end card -->
-
-				<!-- card -->
-				<div class="col-6 col-sm-4 col-md-3 col-xl-2">
-					<div class="card">
-						<div class="card__cover">
-							<img src="{% static 'img/covers/cover16.jpg' %}" alt="">
-							<a href="details.html" class="card__play">
-								<i class="icon ion-ios-play"></i>
-							</a>
-							<span class="card__rate card__rate--green">8.3</span>
-						</div>
-						<div class="card__content">
-							<h3 class="card__title"><a href="details.html">Blindspotting</a></h3>
-							<span class="card__category">
-								<a href="#">Comedy</a>
-								<a href="#">Drama</a>
-							</span>
-						</div>
-					</div>
-				</div>
-				<!-- end card -->
-
-				<!-- card -->
-				<div class="col-6 col-sm-4 col-md-3 col-xl-2">
-					<div class="card">
-						<div class="card__cover">
-							<img src="{% static 'img/covers/cover17.jpg' %}" alt="">
-							<a href="details.html" class="card__play">
-								<i class="icon ion-ios-play"></i>
-							</a>
-							<span class="card__rate card__rate--green">8.0</span>
-						</div>
-						<div class="card__content">
-							<h3 class="card__title"><a href="details.html">I Dream in Another Language</a></h3>
-							<span class="card__category">
-								<a href="#">Action</a>
-								<a href="#">Triler</a>
-							</span>
-						</div>
-					</div>
-				</div>
-				<!-- end card -->
-
-				<!-- card -->
-				<div class="col-6 col-sm-4 col-md-3 col-xl-2">
-					<div class="card">
-						<div class="card__cover">
-							<img src="{% static 'img/covers/cover18.jpg' %}" alt="">
-							<a href="details.html" class="card__play">
-								<i class="icon ion-ios-play"></i>
-							</a>
-							<span class="card__rate card__rate--green">7.1</span>
-						</div>
-						<div class="card__content">
-							<h3 class="card__title"><a href="details.html">Benched</a></h3>
-							<span class="card__category">
-								<a href="#">Comedy</a>
-							</span>
-						</div>
-					</div>
-				</div>
-				<!-- end card -->
+                            </div>
+                            <div class="card__content">
+                                <h3 class="card__title"><a href="{% url 'movie-detail' movie_name=movie.title movie_year=movie.year %}">{{ movie.title }}</a></h3>
+                                <span class="card__category">
+                                    <a href="{% url 'movie-detail' movie_name=movie.title movie_year=movie.year %}">{{ movie.genre }}</a>
+                                </span>
+                            </div>
+                        </div>
+				    </div>
+                {% endfor %}
 			</div>
 
 			<div class="row">
@@ -725,207 +385,32 @@
 				<!-- carousel -->
 				<div class="col-12">
 					<div class="owl-carousel section__carousel" id="carousel1">
-						<div class="card">
-							<div class="card__cover">
-								<img src="{% static 'img/covers/cover.jpg' %}" alt="">
-								<a href="details.html" class="card__play">
-									<i class="icon ion-ios-play"></i>
-								</a>
-								<span class="card__rate card__rate--green">8.4</span>
-							</div>
-							<div class="card__content">
-								<h3 class="card__title"><a href="details.html">I Dream in Another Language</a></h3>
-								<span class="card__category">
-									<a href="#">Action</a>
-									<a href="#">Triler</a>
-								</span>
-							</div>
-						</div>
+                        {% for movie in trending %}
+                            <div class="card">
+                                <div class="card__cover">
+                                    <img src="{{ movie.poster }}" alt="{{ movie.title }}" style="width: 100%;">
+                                    <a href="{% url 'movie-detail' movie_name=movie.title movie_year=movie.year %}" class="card__play">
+                                        <i class="icon ion-ios-play"></i>
+                                    </a>
+                                    {% if movie.imdbRating >= 7.5 %}
+                                        <span class="card__rate card__rate--green">{{ movie.imdbRating }}</span>
+                                    {% elif movie.imdbRating <= 7.5 and movie.imdbRating >= 5.0 %}
+                                        <span class="card__rate card__rate--yellow">{{ movie.imdbRating }}</span>
+                                    {% else %}
+                                        <span class="card__rate card__rate--red">{{ movie.imdbRating }}</span>
+                                    {% endif %}
 
-						<div class="card">
-							<div class="card__cover">
-								<img src="{% static 'img/covers/cover2.jpg' %}" alt="">
-								<a href="details.html" class="card__play">
-									<i class="icon ion-ios-play"></i>
-								</a>
-								<span class="card__rate card__rate--green">7.1</span>
-							</div>
-							<div class="card__content">
-								<h3 class="card__title"><a href="details.html">Benched</a></h3>
-								<span class="card__category">
-									<a href="#">Comedy</a>
-								</span>
-							</div>
-						</div>
+                                </div>
+                                <div class="card__content">
+                                    <h3 class="card__title"><a href="{% url 'movie-detail' movie_name=movie.title movie_year=movie.year %}">{{ movie.title }}</a></h3>
+                                    <span class="card__category">
+                                        <a href="#">{{ movie.genre }}</a>
+                                    </span>
+                                </div>
+						    </div>
+                        {% endfor %}
 
-						<div class="card">
-							<div class="card__cover">
-								<img src="{% static 'img/covers/cover3.jpg' %}" alt="">
-								<a href="details.html" class="card__play">
-									<i class="icon ion-ios-play"></i>
-								</a>
-								<span class="card__rate card__rate--red">6.3</span>
-							</div>
-							<div class="card__content">
-								<h3 class="card__title"><a href="details.html">Whitney</a></h3>
-								<span class="card__category">
-									<a href="#">Romance</a>
-									<a href="#">Drama</a>
-									<a href="#">Music</a>
-								</span>
-							</div>
-						</div>
 
-						<div class="card">
-							<div class="card__cover">
-								<img src="{% static 'img/covers/cover4.jpg' %}" alt="">
-								<a href="details.html" class="card__play">
-									<i class="icon ion-ios-play"></i>
-								</a>
-								<span class="card__rate card__rate--yellow">6.9</span>
-							</div>
-							<div class="card__content">
-								<h3 class="card__title"><a href="details.html">Blindspotting</a></h3>
-								<span class="card__category">
-									<a href="#">Comedy</a>
-									<a href="#">Drama</a>
-								</span>
-							</div>
-						</div>
-
-						<div class="card">
-							<div class="card__cover">
-								<img src="{% static 'img/covers/cover5.jpg' %}" alt="">
-								<a href="details.html" class="card__play">
-									<i class="icon ion-ios-play"></i>
-								</a>
-								<span class="card__rate card__rate--green">8.4</span>
-							</div>
-							<div class="card__content">
-								<h3 class="card__title"><a href="details.html">I Dream in Another Language</a></h3>
-								<span class="card__category">
-									<a href="#">Action</a>
-									<a href="#">Triler</a>
-								</span>
-							</div>
-						</div>
-
-						<div class="card">
-							<div class="card__cover">
-								<img src="{% static 'img/covers/cover6.jpg' %}" alt="">
-								<a href="details.html" class="card__play">
-									<i class="icon ion-ios-play"></i>
-								</a>
-								<span class="card__rate card__rate--green">7.1</span>
-							</div>
-							<div class="card__content">
-								<h3 class="card__title"><a href="details.html">Benched</a></h3>
-								<span class="card__category">
-									<a href="#">Comedy</a>
-								</span>
-							</div>
-						</div>
-
-						<div class="card">
-							<div class="card__cover">
-								<img src="{% static 'img/covers/cover7.jpg' %}" alt="">
-								<a href="details.html" class="card__play">
-									<i class="icon ion-ios-play"></i>
-								</a>
-								<span class="card__rate card__rate--green">7.1</span>
-							</div>
-							<div class="card__content">
-								<h3 class="card__title"><a href="details.html">Benched</a></h3>
-								<span class="card__category">
-									<a href="#">Comedy</a>
-								</span>
-							</div>
-						</div>
-
-						<div class="card">
-							<div class="card__cover">
-								<img src="{% static 'img/covers/cover8.jpg' %}" alt="">
-								<a href="details.html" class="card__play">
-									<i class="icon ion-ios-play"></i>
-								</a>
-								<span class="card__rate card__rate--red">5.5</span>
-							</div>
-							<div class="card__content">
-								<h3 class="card__title"><a href="details.html">I Dream in Another Language</a></h3>
-								<span class="card__category">
-									<a href="#">Action</a>
-									<a href="#">Triler</a>
-								</span>
-							</div>
-						</div>
-
-						<div class="card">
-							<div class="card__cover">
-								<img src="{% static 'img/covers/cover9.jpg' %}" alt="">
-								<a href="details.html" class="card__play">
-									<i class="icon ion-ios-play"></i>
-								</a>
-								<span class="card__rate card__rate--yellow">6.7</span>
-							</div>
-							<div class="card__content">
-								<h3 class="card__title"><a href="details.html">Blindspotting</a></h3>
-								<span class="card__category">
-									<a href="#">Comedy</a>
-									<a href="#">Drama</a>
-								</span>
-							</div>
-						</div>
-
-						<div class="card">
-							<div class="card__cover">
-								<img src="{% static 'img/covers/cover10.jpg' %}" alt="">
-								<a href="details.html" class="card__play">
-									<i class="icon ion-ios-play"></i>
-								</a>
-								<span class="card__rate card__rate--red">5.6</span>
-							</div>
-							<div class="card__content">
-								<h3 class="card__title"><a href="details.html">Whitney</a></h3>
-								<span class="card__category">
-									<a href="#">Romance</a>
-									<a href="#">Drama</a>
-									<a href="#">Music</a>
-								</span>
-							</div>
-						</div>
-
-						<div class="card">
-							<div class="card__cover">
-								<img src="{% static 'img/covers/cover11.jpg' %}" alt="">
-								<a href="details.html" class="card__play">
-									<i class="icon ion-ios-play"></i>
-								</a>
-								<span class="card__rate card__rate--green">9.2</span>
-							</div>
-							<div class="card__content">
-								<h3 class="card__title"><a href="details.html">Benched</a></h3>
-								<span class="card__category">
-									<a href="#">Comedy</a>
-								</span>
-							</div>
-						</div>
-
-						<div class="card">
-							<div class="card__cover">
-								<img src="{% static 'img/covers/cover12.jpg' %}" alt="">
-								<a href="details.html" class="card__play">
-									<i class="icon ion-ios-play"></i>
-								</a>
-								<span class="card__rate card__rate--green">8.4</span>
-							</div>
-							<div class="card__content">
-								<h3 class="card__title"><a href="details.html">I Dream in Another Language</a></h3>
-								<span class="card__category">
-									<a href="#">Action</a>
-									<a href="#">Triler</a>
-								</span>
-							</div>
-						</div>
 					</div>
 				</div>
 				<!-- carousel -->
@@ -1409,10 +894,10 @@
                 <div class="col-12">
                     <div class="footer__content">
                         <a href="index.html" class="footer__logo" style="width: 150px;">
-                            <img src="{% static 'img/logo.webp' %}" alt="" style="margin-bottom: 10px;">
+                            <img src="{% static 'img/logo.svg' %}" alt="" style="margin-bottom: 10px;">
                         </a>
 
-                        <span class="footer__copyright">© FastMovie.online, {% now 'Y' %} Presents <br> Create by <a href="https://themeforest.net/user/dmitryvolkov/portfolio" target="_blank">Dmitry Volkov</a></span>
+                        <span class="footer__copyright">© FastMovie.online, {% now 'Y' %} Presents <br> Create by <a href="#" target="_blank">NFT-Maker</a></span>
 
                         <nav class="footer__nav">
                             <a href="{% url 'about' %}">About Us</a>
