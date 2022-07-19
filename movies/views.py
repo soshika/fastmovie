@@ -15,7 +15,7 @@ rel_endpoint = 'http://45.148.120.241:9092/'
 
 
 def home_page_view(request):
-    trending_response = requests.get(dev_endpoint +'movies/trending')
+    trending_response = requests.get(rel_endpoint +'movies/trending')
     trending_dict = trending_response.json()
     trending = trending_dict['body']
 
@@ -31,7 +31,7 @@ def movie_detail(request, movie_name, movie_year):
 
     print(movie_name, movie_year)
     data = {'title': movie_name, 'year': int(movie_year)}
-    response = requests.post(dev_endpoint + 'movies/data', json=data)
+    response = requests.post(rel_endpoint + 'movies/data', json=data)
     movie_response = response.json()
     print(movie_response)
     movie = movie_response['body']
@@ -62,12 +62,12 @@ def movie_detail(request, movie_name, movie_year):
     # print(links_section)
     #
     data = {'cnt': 10}
-    response = requests.post(dev_endpoint + 'movies/suggestion', json=data)
+    response = requests.post(rel_endpoint + 'movies/suggestion', json=data)
     suggestion_response = response.json()
     suggestions = suggestion_response['body']
 
     data = {'id': movie['id']}
-    response = requests.post(dev_endpoint + 'movies/review/list', json=data)
+    response = requests.post(rel_endpoint + 'movies/review/list', json=data)
     reviews_response = response.json()
     reviews = reviews_response['body']
 
@@ -79,7 +79,7 @@ def movie_detail(request, movie_name, movie_year):
         movie_id = movie['id']
 
         data = {'title': title, 'message': message, 'movie_id': movie_id, 'user_id': user_id, 'rate': rate}
-        response = requests.post(dev_endpoint + 'movies/review/save', json=data)
+        response = requests.post(rel_endpoint + 'movies/review/save', json=data)
         response = response.json()
         return render(request, 'movie-detail.html', {'movie': movie, 'links': links, 'suggestions': suggestions, 'reviews': reviews, 'links_info': links_section})
 
@@ -116,7 +116,7 @@ class ContactPageView(TemplateView):
 
 
 def explore_movies_view(request):
-    top_response = requests.get(dev_endpoint + 'movies/top')
+    top_response = requests.get(rel_endpoint + 'movies/top')
     top_dict = top_response.json()
     top_movies = top_dict['body']
 
@@ -138,7 +138,7 @@ def explore_movies_view(request):
 def search_view(request):
     if request.method == 'POST':
         data = {'query': request.POST['query']}
-        response = requests.post(dev_endpoint + 'movies/search', json=data)
+        response = requests.post(rel_endpoint + 'movies/search', json=data)
         search_response = response.json()
         movies = search_response['body']
         return render(request, 'search.html', {'movies': movies})
