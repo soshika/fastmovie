@@ -6,23 +6,16 @@ from django.shortcuts import render
 from django.views.generic import TemplateView # Import TemplateView
 from django.db import models
 
-from . import  models
+from . import models
 
 # Create your views here.
 
+dev_endpoint = 'http://localhost:9092/'
+rel_endpoint = 'http://45.148.120.241:9092/'
+
 
 def home_page_view(request):
-
-    gs = models.Genres.objects.all()
-    generes = ['']
-    for g in gs:
-        generes.append(g.name)
-
-    countries = models.Countries.objects.all()
-
-    movie = models.Movie.objects.first()
-
-    trending_response = requests.get('http://45.148.120.241:9092/movies/trending')
+    trending_response = requests.get(dev_endpoint +'movies/trending')
     trending_dict = trending_response.json()
     trending = trending_dict['body']
 
@@ -31,17 +24,14 @@ def home_page_view(request):
             t['imdbRating'] = 0.0
         t['imdbRating'] = float(t['imdbRating'])
 
-    return render(request, 'index.html', {'generes': generes,
-                                          'countries': countries,
-                                          'movie': movie,
-                                          'trending': trending})
+    return render(request, 'index.html', {'trending': trending})
 
 
 def movie_detail(request, movie_name, movie_year):
 
     print(movie_name, movie_year)
     data = {'title': movie_name, 'year': int(movie_year)}
-    response = requests.post('http://45.148.120.241:9092/movies/data', json=data)
+    response = requests.post(dev_endpoint + 'movies/data', json=data)
     movie_response = response.json()
     print(movie_response)
     movie = movie_response['body']
@@ -72,12 +62,12 @@ def movie_detail(request, movie_name, movie_year):
     # print(links_section)
     #
     data = {'cnt': 10}
-    response = requests.post('http://45.148.120.241:9092/movies/suggestion', json=data)
+    response = requests.post(dev_endpoint + 'movies/suggestion', json=data)
     suggestion_response = response.json()
     suggestions = suggestion_response['body']
 
     data = {'id': movie['id']}
-    response = requests.post('http://45.148.120.241:9092/movies/review/list', json=data)
+    response = requests.post(dev_endpoint + 'movies/review/list', json=data)
     reviews_response = response.json()
     reviews = reviews_response['body']
 
@@ -89,10 +79,8 @@ def movie_detail(request, movie_name, movie_year):
         movie_id = movie['id']
 
         data = {'title': title, 'message': message, 'movie_id': movie_id, 'user_id': user_id, 'rate': rate}
-        print(data)
-        response = requests.post('http://45.148.120.241:9092/movies/review/save', json=data)
+        response = requests.post(dev_endpoint + 'movies/review/save', json=data)
         response = response.json()
-        print(response)
         return render(request, 'movie-detail.html', {'movie': movie, 'links': links, 'suggestions': suggestions, 'reviews': reviews, 'links_info': links_section})
 
     return render(request, 'movie-detail.html', {'movie': movie, 'links': links, 'suggestions': suggestions, 'reviews': reviews, 'links_info': links_section})
@@ -128,7 +116,7 @@ class ContactPageView(TemplateView):
 
 
 def explore_movies_view(request):
-    top_response = requests.get('http://45.148.120.241:9092/movies/top')
+    top_response = requests.get(dev_endpoint + 'movies/top')
     top_dict = top_response.json()
     top_movies = top_dict['body']
 
@@ -150,7 +138,7 @@ def explore_movies_view(request):
 def search_view(request):
     if request.method == 'POST':
         data = {'query': request.POST['query']}
-        response = requests.post('http://45.148.120.241:9092/movies/search', json=data)
+        response = requests.post(dev_endpoint + 'movies/search', json=data)
         search_response = response.json()
         movies = search_response['body']
         return render(request, 'search.html', {'movies': movies})

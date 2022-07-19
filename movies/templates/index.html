@@ -157,7 +157,7 @@
                             <div class="card card--big">
                                 <div class="card__cover">
                                     <img src="{{movie.poster}}" alt="{{ movie.title }}" style="width: 188px; height: 280px;">
-                                    <a href="details.html" class="card__play">
+                                    <a href="{% url 'movie-detail' movie_name=movie.title movie_year=movie.year %}" class="card__play">
                                         <i class="icon ion-ios-play"></i>
                                     </a>
                                     {% if movie.imdbRating >= 7.5 %}
@@ -169,7 +169,7 @@
                                     {% endif %}
                                 </div>
                                 <div class="card__content">
-                                    <h3 class="card__title"><a href="details.html">{{ movie.title }}</a></h3>
+                                    <h3 class="card__title"><a href="{% url 'movie-detail' movie_name=movie.title movie_year=movie.year %}">{{ movie.title }}</a></h3>
                                     <span class="card__category">
                                         <a href="#">{{ movie.genre }}</a>
                                     </span>
@@ -200,9 +200,7 @@
 								</div>
 
 								<ul class="filter__item-menu dropdown-menu scrollbar-dropdown" aria-labelledby="filter-genre">
-                                    {% for g in generes %}
-                                        <li>{{ g|lower|capfirst }}</li>
-                                    {% endfor %}
+                                  
 
 								</ul>
 							</div>
@@ -217,9 +215,6 @@
 								</div>
 
 								<ul class="filter__item-menu dropdown-menu scrollbar-dropdown" aria-labelledby="filter-genre">
-									{% for c in countries %}
-                                        <li>{{ c.name|lower|capfirst }}</li>
-                                    {% endfor %}
 								</ul>
 							</div>
 
