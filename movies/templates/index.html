@@ -200,8 +200,10 @@
 								</div>
 
 								<ul class="filter__item-menu dropdown-menu scrollbar-dropdown" aria-labelledby="filter-genre">
-                                  
-
+									{% for genre in genres %}
+										<li>{{ genre }}</li>
+									{% endfor %}
+								
 								</ul>
 							</div>
 							<!-- end filter item -->

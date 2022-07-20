@@ -16,6 +16,10 @@ rel_endpoint = 'http://45.148.120.241:9092/'
 
 def home_page_view(request):
 
+    genres_response = requests.get(rel_endpoint + 'movies/genres-list')
+    genres_dict = genres_response.json()
+    genres = genres_dict['body']
+
     countries_response = requests.get(rel_endpoint + 'movies/country-list')
     countries_dict = countries_response.json()
     countries = countries_dict['body']
@@ -29,7 +33,7 @@ def home_page_view(request):
             t['imdbRating'] = 0.0
         t['imdbRating'] = float(t['imdbRating'])
 
-    return render(request, 'index.html', {'trending': trending, 'countries': countries})
+    return render(request, 'index.html', {'trending': trending, 'countries': countries, 'genres': genres})
 
 
 def movie_detail(request, movie_name, movie_year):
