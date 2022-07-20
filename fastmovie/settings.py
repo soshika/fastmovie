@@ -24,7 +24,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-1bo#4(h)52w4-3&ngs(n_(b%hcrwk(cn-bqd$h6_w2az0py41+'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = ['fastmovie.online', 'http://45.148.120.241', '45.148.120.241', '*']
 
