@@ -16,7 +16,7 @@ rel_endpoint = 'http://45.148.120.241:9092/'
 
 def home_page_view(request):
 
-    countries_response = requests.get(dev_endpoint + 'movies/country-list')
+    countries_response = requests.get(rel_endpoint + 'movies/country-list')
     countries_dict = countries_response.json()
     countries = countries_dict['body']
 
