@@ -215,6 +215,9 @@
 								</div>
 
 								<ul class="filter__item-menu dropdown-menu scrollbar-dropdown" aria-labelledby="filter-genre">
+									{% for country in countries %}
+										<li>{{ country }}</li>
+									{% endfor %}
 								</ul>
 							</div>
 
