@@ -38,7 +38,7 @@
 				<div class="col-12">
 					<div class="header__content">
 						<!-- header logo -->
-						<a href="index.html" class="header__logo" style="width: 175px;">
+						<a href="{% url 'home' %}" class="header__logo" style="width: 175px;">
 							<img src="{% static 'img/logo.svg' %}"  alt="" style="margin-bottom: 10px;margin-right: 10px">
 						</a>
 						<!-- end header logo -->
@@ -58,6 +58,7 @@
 								<ul class="dropdown-menu header__dropdown-menu" aria-labelledby="dropdownMenuCatalog">
 									<li><a href="{% url 'explore-movies' %}">Explore</a></li>
                                     <li><a href="{% url 'explore-movies' %}">Top 250 IMDB</a></li>
+									<li><a href="{% url 'explore-movies' %}">Animations</a></li>
 
 								</ul>
 							</li>
@@ -85,14 +86,13 @@
 						<!-- end header nav -->
 
                         <div style="margin-right: -380px; margin-left: 60px;">
-                            <form action="#" class="header__search">
-                                <input class="header__search-input" type="text" placeholder="Upload Movie">
-                                <button class="header__search-button" type="button">
+                            <form action="#" method="post" class="header__search">
+                                {% csrf_token %}
+                                <input class="header__search-input" type="text" name="query" placeholder="Upload Movie">
+                                <button class="header__search-button" type="submit">
                                     <img src="{% static 'img/extra/upload.png' %}" style="height: 22px; width: 24px;" />
                                 </button>
-                                <button class="header__search-close" type="button">
 
-                                </button>
                             </form>
 
                             <button class="header__search-btn" type="button">
@@ -342,30 +342,30 @@
 
 	<!-- footer -->
 	<footer class="footer">
-		<div class="container">
-			<div class="row">
-				<div class="col-12">
-					<div class="footer__content">
-						<a href="index.html" class="footer__logo" style="width: 150px;">
-							<img src="{% static 'img/logo.svg' %}" alt="">
-						</a>
+        <div class="container">
+            <div class="row">
+                <div class="col-12">
+                    <div class="footer__content">
+                        <a href="index.html" class="footer__logo" style="width: 150px;">
+                            <img src="{% static 'img/logo.svg' %}" alt="" style="margin-bottom: 10px;">
+                        </a>
 
-						<span class="footer__copyright">© FastMovie.online, {% now 'Y' %} Presents <br> Create by <a href="https://themeforest.net/user/dmitryvolkov/portfolio" target="_blank">Dmitry Volkov</a></span>
+                        <span class="footer__copyright">© FastMovie.online, {% now 'Y' %} Presents <br> Create by <a href="#" target="_blank">NFT-Maker</a></span>
 
-						<nav class="footer__nav">
-							<a href="{% url 'about' %}">About Us</a>
-							<a href="{% url 'contact' %}">Contacts</a>
-							<a href="{% url 'privacy' %}">Privacy policy</a>
-						</nav>
+                        <nav class="footer__nav">
+                            <a href="{% url 'about' %}">About Us</a>
+                            <a href="{% url 'contact' %}">Contacts</a>
+                            <a href="{% url 'privacy' %}">Privacy policy</a>
+                        </nav>
 
-						<button class="footer__back" type="button">
-							<i class="icon ion-ios-arrow-round-up"></i>
-						</button>
-					</div>
-				</div>
-			</div>
-		</div>
-	</footer>
+                        <button class="footer__back" type="button">
+                            <i class="icon ion-ios-arrow-round-up"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
 	<!-- end footer -->
 
 	<!-- JS -->
