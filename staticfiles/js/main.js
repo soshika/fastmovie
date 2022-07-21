@@ -493,12 +493,12 @@ $(document).ready(function () {
 			var firstSlider = document.getElementById('filter__years');
 			noUiSlider.create(firstSlider, {
 				range: {
-					'min': 2000,
-					'max': 2021
+					'min': 1950,
+					'max': 2022
 				},
 				step: 1,
 				connect: true,
-				start: [2007, 2019],
+				start: [2000, 2022],
 				format: wNumb({
 					decimals: 0,
 				})

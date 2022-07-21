@@ -16,6 +16,9 @@ rel_endpoint = 'http://45.148.120.241:9092/'
 
 def home_page_view(request):
 
+    if request.method == 'POST':
+        print(request.POST.get('filter-max-year', False))
+
     genres_response = requests.get(rel_endpoint + 'movies/genres-list')
     genres_dict = genres_response.json()
     genres = genres_dict['body']
@@ -45,7 +48,6 @@ def movie_detail(request, movie_name, movie_year):
     links = []
     links_section = []
 
-    link_id = 1
     try:
         jdata = json.loads(movie['links'])
 
@@ -53,15 +55,21 @@ def movie_detail(request, movie_name, movie_year):
             fix_link = str(link['url'])
             fix_link = fix_link.replace('sia://', 'https://siasky.net/')
             links.append(fix_link)
-            # info = ur.urlopen(fix_link)
-            # size = int(info.headers['Content-Length']) / 1000000000
-            size = 1.7
-            if link_id == 1:
-                links_section.append({'quality': '1080P', 'size': round(size, 2), 'link': fix_link})
-            else:
-                links_section.append({'quality': '720P', 'size': round(size, 2), 'link': fix_link})
+            size = ''
+            quality = ''
+            if 'fileSize' not in link:
+                size = 'N/A'
+            else :
+                size = link['fileSize']
+                size = str(round(size, 2))
 
-            link_id += 1
+            if 'quality' not in link:
+                quality = 'N/A'
+            else:
+                quality = link['quality']
+            
+            links_section.append({'quality': quality, 'size': size, 'link': fix_link})
+
     except Exception as err:
         print(err)
 

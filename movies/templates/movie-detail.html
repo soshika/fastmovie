@@ -155,9 +155,23 @@
 							<div class="col-12 col-sm-5 col-md-4 col-lg-3 col-xl-5">
 								<div class="card__cover">
 									<img src="{{ movie.poster }}" alt="">
-									<span class="card__rate card__rate--green">8.4</span>
+									{% if movie.imdbRating >= 7.5 %}
+                                        <span class="card__rate card__rate--green">{{ movie.imdbRating }}</span>
+                                    {% elif movie.imdbRating <= 7.5 and movie.imdbRating >= 5.0 %}
+                                        <span class="card__rate card__rate--yellow">{{ movie.imdbRating }}</span>
+                                    {% else %}
+                                        <span class="card__rate card__rate--red">{{ movie.imdbRating }}</span>
+                                    {% endif %}
+									
 								</div>
-								<a href="{{ movie.url }}" class="card__trailer"><i class="icon ion-ios-play-circle"></i> Watch trailer</a>
+								<div class="row mt-1">
+									<div class="col-6 d-flex justify-content-center">
+										<a class="p-4 m-2" href=""  style=""><img class="p-2" src="{% static 'img/like.png' %}" style=" border: 2px solid #9ef01a; height: 70%;"/></a>
+									</div>
+									<div class="col-6 d-flex justify-content-center">
+										<a class="p-4 m-2" href=""  style=""><img class="p-2" src="{% static 'img/dislike.png' %}" style="border: 2px solid #ff002b; height: 70%;"/></a>
+									</div>
+								</div>
 							</div>
 							<!-- end card cover -->
 
@@ -295,21 +309,24 @@
 
 						<div class="tab-pane fade" id="tab-3" role="tabpanel" aria-labelledby="3-tab">
 							<!-- project gallery -->
-							<div class="gallery" itemscope>
-
+							<div class="gallery">
                                     {% for link in links_info %}
                                         <div class="row row--grid">
-                                            <figure class="col-12 col-sm-12 col-xl-6" itemprop="associatedMedia" itemscope>
+                                            <figure class="col-12 col-sm-12 col-xl-6">
                                                 <div class="row" style="background-color: #222028; border: 2px solid #f9ab00; border-radius: 5px; width: 200%; height: 60px;">
                                                     <div class="col-md-4">
-                                                        <button style="background-color: #495057; height: 40px; width: 60%; margin-top: 8px; border-radius: 5px">
-                                                            <a class="button" style="color: white;" href="{{ link.link }}">Download</a>
+                                                        <button id="downloadBtn" onclick="downloadBtn()" style="background-color: #495057; height: 40px; width: 60%; margin-top: 8px; border-radius: 5px">
+                                                            <a class="button" style="color: white;" target="_blank" href="{{ link.link }}">Download</a>
                                                         </button>
+														<script>
+															function downloadBtn() {
+																location.href = "{{ link.link }}"; 
+															}
+															</script>
                                                     </div>
-
                                                     <div class="col-md-4">
                                                         <img src="{% static 'img/extra/size.png' %}" style="height: 24px; width: 24px; margin-top: 16px;" />
-                                                        <h4 style="color: white; text-align: center;margin-top: -24px; margin-left: -30px;">File Size: {{ link.size }}GB</h4>
+                                                        <h4 style="color: white; text-align: center;margin-top: -24px; margin-left: -30px;">File Size: {{ link.size }} {% if link.size != 'N/A' %} GB {% endif %}</h4>
                                                     </div>
 
                                                      <div class="col-md-4">
