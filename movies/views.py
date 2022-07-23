@@ -165,22 +165,23 @@ def search_view(request):
             return render(request, 'search.html', {'movies': movies, 'countries': countries, 'genres': genres})
         
     if request.method == 'GET':
+        print(request.GET)
         min_year = None
         max_year = None
         min_rate = None
         max_rate = None
         data = dict()
-        if request.GET.get('min_year'):
-            min_year = request.GET['min_year']
+        if request.GET.get('input-min-year'):
+            min_year = int(request.GET['input-min-year'])
 
-        if request.GET.get('max_year'):
-            min_year = request.GET['max_year']
+        if request.GET.get('input-max-year'):
+            max_year = int(request.GET['input-max-year'])
 
-        if request.GET.get('min_rate'):
-            min_year = request.GET['min_rate']
+        if request.GET.get('input-min-imdb'):
+            min_rate = float(request.GET['input-min-imdb'][0])
         
-        if request.GET.get('max_rate'):
-            min_year = request.GET['max_rate']
+        if request.GET.get('input-max-imdb'):
+            max_rate = float(request.GET['input-max-imdb'][0])
 
         if min_year != None:
             data['min_year'] = min_year
@@ -197,6 +198,7 @@ def search_view(request):
         response = requests.post(rel_endpoint + 'movies/search', json=data)
         search_response = response.json()
         movies = search_response['body']
+        
         return render(request, 'search.html', {'movies': movies, 'countries': countries, 'genres': genres})
         
     return render(request, "search.html", {'countries': countries, 'genres': genres})
