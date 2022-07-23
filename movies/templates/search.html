@@ -143,13 +143,13 @@
 				<div class="col-12">
 					<div class="section__wrap">
 						<!-- section title -->
-						<h1 class="section__title">Explore</h1>
+						<h1 class="section__title">Search</h1>
 						<!-- end section title -->
 
 						<!-- breadcrumb -->
 						<ul class="breadcrumb">
 							<li class="breadcrumb__item"><a href="{% url 'home' %}">Home</a></li>
-							<li class="breadcrumb__item breadcrumb__item--active">Explore Movies</li>
+							<li class="breadcrumb__item breadcrumb__item--active">Search Movies</li>
 						</ul>
 						<!-- end breadcrumb -->
 					</div>
@@ -166,115 +166,107 @@
 				<div class="row">
 					<div class="col-12">
 						<div class="filter__content">
-							<div class="filter__items">
-								<!-- filter item -->
-								<div class="filter__item" id="filter__genre">
-									<span class="filter__item-label">GENRE:</span>
-
-									<div class="filter__item-btn dropdown-toggle" role="navigation" id="filter-genre" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-										<input type="button" value="Action/Adventure">
-										<span></span>
-									</div>
-
-									<ul class="filter__item-menu dropdown-menu scrollbar-dropdown" aria-labelledby="filter-genre">
-										<li>Action/Adventure</li>
-										<li>Animals</li>
-										<li>Animation</li>
-										<li>Biography</li>
-										<li>Comedy</li>
-										<li>Cooking</li>
-										<li>Dance</li>
-										<li>Documentary</li>
-										<li>Drama</li>
-										<li>Education</li>
-										<li>Entertainment</li>
-										<li>Family</li>
-										<li>Fantasy</li>
-										<li>History</li>
-										<li>Horror</li>
-										<li>Independent</li>
-										<li>International</li>
-										<li>Kids</li>
-										<li>Kids & Family</li>
-										<li>Medical</li>
-										<li>Military/War</li>
-										<li>Music</li>
-										<li>Musical</li>
-										<li>Mystery/Crime</li>
-										<li>Nature</li>
-										<li>Paranormal</li>
-										<li>Politics</li>
-										<li>Racing</li>
-										<li>Romance</li>
-										<li>Sci-Fi/Horror</li>
-										<li>Science</li>
-										<li>Science Fiction</li>
-										<li>Science/Nature</li>
-										<li>Spanish</li>
-										<li>Travel</li>
-										<li>Western</li>
-									</ul>
-								</div>
-								<!-- end filter item -->
-
-								<!-- filter item -->
-								<div class="filter__item" id="filter__quality">
-									<span class="filter__item-label">QUALITY:</span>
-
-									<div class="filter__item-btn dropdown-toggle" role="navigation" id="filter-quality" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-										<input type="button" value="HD 1080">
-										<span></span>
-									</div>
-
-									<ul class="filter__item-menu dropdown-menu scrollbar-dropdown" aria-labelledby="filter-quality">
-										<li>HD 1080</li>
-										<li>HD 720</li>
-										<li>DVD</li>
-										<li>TS</li>
-									</ul>
-								</div>
-								<!-- end filter item -->
-
-								<!-- filter item -->
-								<div class="filter__item" id="filter__rate">
-									<span class="filter__item-label">RATING:</span>
-
-									<div class="filter__item-btn dropdown-toggle" role="button" id="filter-rate" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-										<div class="filter__range">
-											<div id="filter__imbd-start"></div>
-											<div id="filter__imbd-end"></div>
+							<form method="get" action="{% url 'search' %}">
+								{% csrf_token %}
+								<div class="filter__items">
+									<!-- filter item -->
+									<div class="filter__item" id="filter__genre">
+										<span class="filter__item-label">GENRE:</span>
+		
+										<div class="filter__item-btn dropdown-toggle" role="navigation" id="filter-genre" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+											<input name='filter-genre' type="button" value="{{genres.0}}">
+											<span></span>
 										</div>
-										<span></span>
+		
+										<ul class="filter__item-menu dropdown-menu scrollbar-dropdown" aria-labelledby="filter-genre">
+											{% for genre in genres %}
+												<li>{{ genre }}</li>
+											{% endfor %}
+										
+										</ul>
 									</div>
-
-									<div class="filter__item-menu filter__item-menu--range dropdown-menu" aria-labelledby="filter-rate">
-										<div id="filter__imbd"></div>
-									</div>
-								</div>
-								<!-- end filter item -->
-
-								<!-- filter item -->
-								<div class="filter__item" id="filter__year">
-									<span class="filter__item-label">RELEASE YEAR:</span>
-
-									<div class="filter__item-btn dropdown-toggle" role="button" id="filter-year" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-										<div class="filter__range">
-											<div id="filter__years-start"></div>
-											<div id="filter__years-end"></div>
+									<!-- end filter item -->
+		
+									<div class="filter__item" id="filter-country">
+										<span class="filter__item-label">Country:</span>
+		
+										<div class="filter__item-btn dropdown-toggle" role="navigation" id="filter-country" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+											<input name="filter-country" type="button" value="{{ countries.0}}">
+											<span></span>
 										</div>
-										<span></span>
+		
+										<ul class="filter__item-menu dropdown-menu scrollbar-dropdown" aria-labelledby="filter-genre">
+											{% for country in countries %}
+												<li>{{ country }}</li>
+											{% endfor %}
+										</ul>
 									</div>
-
-									<div class="filter__item-menu filter__item-menu--range dropdown-menu" aria-labelledby="filter-year">
-										<div id="filter__years"></div>
+		
+									<!-- filter item -->
+									<div class="filter__item" id="filter__rate">
+										<span class="filter__item-label">RATING:</span>
+		
+										<div class="filter__item-btn dropdown-toggle" role="button" id="filter-rate" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+											<div class="filter__range"> 
+												<div id="filter__imbd-start"></div>
+												<div id="filter__imbd-end"></div>
+	
+												<input type="hidden" id="input__imdb-start" name='input-min-imdb'></input>
+												<input type="hidden" id="input__imdb-end" name='input-max-imdb'></input>
+											</div>
+											<span></span>
+										</div>
+		
+										<div class="filter__item-menu filter__item-menu--range dropdown-menu" aria-labelledby="filter-rate">
+											<div id="filter__imbd"></div>
+										</div>
 									</div>
+									<!-- end filter item -->
+		
+									<!-- filter item -->
+									<div class="filter__item" id="filter__year">
+										<span class="filter__item-label">RELEASE YEAR:</span>
+		
+										<div class="filter__item-btn dropdown-toggle" role="button" id="filter-year"  data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+											<div class="filter__range"> 
+												
+												<div id="filter__years-start" name='filter-min-year'></div>
+												<div id="filter__years-end" name='filter-max-year'></div>
+	
+												<input type="hidden" id="input__years-start" name='input-min-year'></input>
+												<input type="hidden" id="input__years-end" name='input-max-year'></input>
+	
+											</div>
+											<span></span>
+										</div>
+		
+										<div class="filter__item-menu filter__item-menu--range dropdown-menu" aria-labelledby="filter-year">
+											<div id="filter__years" ></div>
+										</div>
+									</div>
+									<!-- end filter item -->
+		
+									<!-- filter btn -->
+									<button class="filter__btn" type="submit">apply filter</input>
+									<!-- end filter btn -->
 								</div>
-								<!-- end filter item -->
-							</div>
-
-							<!-- filter btn -->
-							<button class="filter__btn" type="button">apply filter</button>
-							<!-- end filter btn -->
+							</form>
+	
+							<form action="{% url 'search' %}" method="post" class="header__search">
+								{% csrf_token %}
+								<input class="header__search-input" type="text" name="query" placeholder="Search...">
+								<button class="header__search-button" type="submit">
+									<i class="icon ion-ios-search"></i>
+								</button>
+								<button class="header__search-close" type="submit">
+									<i class="icon ion-md-close"></i>
+								</button>
+							</form>
+	
+							<button class="header__search-btn" type="button">
+								<i class="icon ion-ios-search"></i>
+							</button>
+							
 						</div>
 					</div>
 				</div>
@@ -291,7 +283,7 @@
                         <div class="col-6 col-sm-4 col-md-3 col-xl-2">
                             <div class="card">
                                 <div class="card__cover">
-                                    <img src="{{ movie.poster }}" alt="{{ movie.title }}" style="width: 188px; height: 280px;">
+                                    <img src="{{ movie.poster }}" alt="{{ movie.title }}" style="width: 100%; height: 260px;">
                                     <a href="{% url 'movie-detail' movie_name=movie.title movie_year=movie.year %}" class="card__play">
                                         <i class="icon ion-ios-play"></i>
                                     </a>

@@ -188,7 +188,7 @@
 			<div class="row">
 				<div class="col-12">
 					<div class="filter__content">
-						<form method="post" action="{% url 'home' %}">
+						<form method="get" action="{% url 'search' %}">
 							{% csrf_token %}
 							<div class="filter__items">
 								<!-- filter item -->
@@ -196,7 +196,7 @@
 									<span class="filter__item-label">GENRE:</span>
 	
 									<div class="filter__item-btn dropdown-toggle" role="navigation" id="filter-genre" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-										<input type="button" value="{{genres.0}}">
+										<input name='filter-genre' type="button" value="{{genres.0}}">
 										<span></span>
 									</div>
 	
@@ -209,11 +209,11 @@
 								</div>
 								<!-- end filter item -->
 	
-								<div class="filter__item" id="filter__genre">
+								<div class="filter__item" id="filter-country">
 									<span class="filter__item-label">Country:</span>
 	
-									<div class="filter__item-btn dropdown-toggle" role="navigation" id="filter-genre" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-										<input type="button" value="{{ countries.0}}">
+									<div class="filter__item-btn dropdown-toggle" role="navigation" id="filter-country" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+										<input name="filter-country" type="button" value="{{ countries.0}}">
 										<span></span>
 									</div>
 	
@@ -229,9 +229,12 @@
 									<span class="filter__item-label">RATING:</span>
 	
 									<div class="filter__item-btn dropdown-toggle" role="button" id="filter-rate" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-										<div class="filter__range">
+										<div class="filter__range"> 
 											<div id="filter__imbd-start"></div>
 											<div id="filter__imbd-end"></div>
+
+											<input type="hidden" id="input__imdb-start" name='input-min-imdb'></input>
+											<input type="hidden" id="input__imdb-end" name='input-max-imdb'></input>
 										</div>
 										<span></span>
 									</div>
@@ -247,9 +250,14 @@
 									<span class="filter__item-label">RELEASE YEAR:</span>
 	
 									<div class="filter__item-btn dropdown-toggle" role="button" id="filter-year"  data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-										<div class="filter__range">
+										<div class="filter__range"> 
+											
 											<div id="filter__years-start" name='filter-min-year'></div>
 											<div id="filter__years-end" name='filter-max-year'></div>
+
+											<input type="hidden" id="input__years-start" name='input-min-year'></input>
+											<input type="hidden" id="input__years-end" name='input-max-year'></input>
+
 										</div>
 										<span></span>
 									</div>
@@ -261,12 +269,10 @@
 								<!-- end filter item -->
 	
 								<!-- filter btn -->
-								<button class="filter__btn" type="submit">apply filter</button>
+								<button class="filter__btn" type="submit">apply filter</input>
 								<!-- end filter btn -->
 							</div>
 						</form>
-
-					
 
                         <form action="{% url 'search' %}" method="post" class="header__search">
                             {% csrf_token %}
@@ -282,7 +288,6 @@
                         <button class="header__search-btn" type="button">
                             <i class="icon ion-ios-search"></i>
                         </button>
-						
 						
 					</div>
 				</div>

@@ -493,12 +493,12 @@ $(document).ready(function () {
 			var firstSlider = document.getElementById('filter__years');
 			noUiSlider.create(firstSlider, {
 				range: {
-					'min': 2000,
-					'max': 2021
+					'min': 1940,
+					'max': 2022
 				},
 				step: 1,
 				connect: true,
-				start: [2007, 2019],
+				start: [1940, 2022],
 				format: wNumb({
 					decimals: 0,
 				})
@@ -507,7 +507,12 @@ $(document).ready(function () {
 				document.getElementById('filter__years-start'),
 				document.getElementById('filter__years-end')
 			];
+			var inputValues = [
+				document.getElementById('input__years-start'),
+				document.getElementById('input__years-end')
+			];
 			firstSlider.noUiSlider.on('update', function( values, handle ) {
+				inputValues[handle].value = values[handle];
 				firstValues[handle].innerHTML = values[handle];
 			});
 		} else {
@@ -539,8 +544,14 @@ $(document).ready(function () {
 				document.getElementById('filter__imbd-end')
 			];
 
+			var thirdValues = [
+				document.getElementById('input__imdb-start'),
+				document.getElementById('input__imdb-end')
+			];
+
 			secondSlider.noUiSlider.on('update', function( values, handle ) {
 				secondValues[handle].innerHTML = values[handle];
+				thirdValues[handle].value = values[handle];
 			});
 
 			$('.filter__item-menu--range').on('click.bs.dropdown', function (e) {

@@ -1,4 +1,5 @@
 import json
+from tkinter.messagebox import NO
 import urllib.request as ur
 
 import requests
@@ -15,9 +16,6 @@ rel_endpoint = 'http://45.148.120.241:9092/'
 
 
 def home_page_view(request):
-
-    if request.method == 'POST':
-        print(request.POST.get('filter-max-year', False))
 
     genres_response = requests.get(rel_endpoint + 'movies/genres-list')
     genres_dict = genres_response.json()
@@ -150,10 +148,55 @@ def explore_movies_view(request):
 
 
 def search_view(request):
+    genres_response = requests.get(rel_endpoint + 'movies/genres-list')
+    genres_dict = genres_response.json()
+    genres = genres_dict['body']
+
+    countries_response = requests.get(rel_endpoint + 'movies/country-list')
+    countries_dict = countries_response.json()
+    countries = countries_dict['body']
+
     if request.method == 'POST':
-        data = {'query': request.POST['query']}
-        response = requests.post(rel_endpoint + 'movies/search', json=data)
+        if request.POST.get('query'):
+            data = {'query': request.POST['query']}
+            response = requests.post(rel_endpoint + 'movies/search', json=data)
+            search_response = response.json()
+            movies = search_response['body']
+            return render(request, 'search.html', {'movies': movies, 'countries': countries, 'genres': genres})
+        
+    if request.method == 'GET':
+        min_year = None
+        max_year = None
+        min_rate = None
+        max_rate = None
+        data = dict()
+        if request.GET.get('min_year'):
+            min_year = request.GET['min_year']
+
+        if request.GET.get('max_year'):
+            min_year = request.GET['max_year']
+
+        if request.GET.get('min_rate'):
+            min_year = request.GET['min_rate']
+        
+        if request.GET.get('max_rate'):
+            min_year = request.GET['max_rate']
+
+        if min_year != None:
+            data['min_year'] = min_year
+
+        if min_rate != None:
+            data['min_rate'] = min_rate
+        
+        if max_year != None:
+            data['max_year'] = max_year
+        
+        if max_rate != None:
+            data['max_rate'] = max_rate
+
+        response = requests.post(dev_endpoint + 'movies/search', json=data)
         search_response = response.json()
         movies = search_response['body']
-        return render(request, 'search.html', {'movies': movies})
-    return render(request, "search.html")
+        return render(request, 'search.html', {'movies': movies, 'countries': countries, 'genres': genres})
+        
+    return render(request, "search.html", {'countries': countries, 'genres': genres})
