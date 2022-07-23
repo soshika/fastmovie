@@ -194,7 +194,7 @@ def search_view(request):
         if max_rate != None:
             data['max_rate'] = max_rate
 
-        response = requests.post(dev_endpoint + 'movies/search', json=data)
+        response = requests.post(rel_endpoint + 'movies/search', json=data)
         search_response = response.json()
         movies = search_response['body']
         return render(request, 'search.html', {'movies': movies, 'countries': countries, 'genres': genres})
