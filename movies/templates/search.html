@@ -56,10 +56,9 @@
 								<a class="dropdown-toggle header__nav-link" href="#" role="button" id="dropdownMenuCatalog" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Movies <i class="icon ion-ios-arrow-down"></i></a>
 
 								<ul class="dropdown-menu header__dropdown-menu" aria-labelledby="dropdownMenuCatalog">
-									<li><a href="{% url 'explore-movies' %}">Explore</a></li>
+									<li><a href="{% url 'explore' page=1 %}">Explore</a></li>
                                     <li><a href="{% url 'explore-movies' %}">Top 250 IMDB</a></li>
 									<li><a href="{% url 'explore-movies' %}">Animations</a></li>
-
 								</ul>
 							</li>
 							<!-- end dropdown -->

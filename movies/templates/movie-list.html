@@ -291,7 +291,7 @@
                         <div class="col-6 col-sm-4 col-md-3 col-xl-2">
                             <div class="card">
                                 <div class="card__cover">
-                                    <img src="{{ movie.poster }}" alt="{{ movie.title }}" style="width: 188px; height: 280px;">
+                                    <img src="{{ movie.poster }}" alt="{{ movie.title }}" style="width: 180px; height: 280px;">
                                     <a href="{% url 'movie-detail' movie_name=movie.title movie_year=movie.year %}" class="card__play">
                                         <i class="icon ion-ios-play"></i>
                                     </a>
@@ -335,6 +335,28 @@
 {#                    </div>#}
                     <!-- end paginator -->
 			    </div>
+			</div>
+			<div class="row">
+				<!-- paginator -->
+				<div class="col-12">
+					<ul class="paginator">
+						<li class="paginator__item paginator__item--prev">
+							<a href="{% url 'explore' page=prev_page %}"><i class="icon ion-ios-arrow-back"></i></a>
+						</li>
+						{% for i in cnt %}
+							{% if i == current_page%}
+								<li class="paginator__item paginator__item--active"><a href="{% url 'explore' page=current_page %}">{{i}}</a></li>
+							{% else %}
+								<li class="paginator__item"><a href="{% url 'explore' page=i %}">{{i}}</a></li>
+							{% endif %}
+						
+						{% endfor %}
+						<li class="paginator__item paginator__item--next">
+							<a href="{% url 'explore' page=next_page %}"><i class="icon ion-ios-arrow-forward"></i></a>
+						</li>
+					</ul>
+				</div>
+				<!-- end paginator -->
 			</div>
 		</div>
 		<!-- end catalog -->

@@ -127,7 +127,7 @@ class ContactPageView(TemplateView):
     template_name = 'contact.html'
 
 
-def explore_movies_view(request):
+def explore_top_movies_view(request):
     top_response = requests.get(rel_endpoint + 'movies/top')
     top_dict = top_response.json()
     top_movies = top_dict['body']
@@ -145,6 +145,32 @@ def explore_movies_view(request):
         t['imdbRating'] = float(t['imdbRating'])
 
     return render(request, 'movie-list.html', {'movies': final_top_movies})
+
+
+def explore_movies_view(request, page):
+    data = {'from': page*24-24+1, 'to': page*24}
+    explore_response = requests.post(dev_endpoint + 'movies/explore', json=data)
+    explore_response_json = explore_response.json()
+    explore = explore_response_json['body']
+
+    for t in explore:
+        if t['imdbRating'] == 'N/A':
+            t['imdbRating'] = 0.0
+        t['imdbRating'] = float(t['imdbRating'])
+
+    
+    # TODO: should dynamically fill it
+    prev_page = page
+    if prev_page > 1 :
+        prev_page -= 1
+
+    next_page = page
+    if next_page < 8:
+        next_page += 1
+
+    page_cnt = 9
+
+    return render(request, 'movie-list.html', {'movies': explore, 'current_page': page, 'prev_page': prev_page, 'next_page': next_page, 'cnt': range(1, page_cnt)})
 
 
 def search_view(request):
@@ -169,7 +195,6 @@ def search_view(request):
             return render(request, 'search.html', {'movies': movies, 'countries': countries, 'genres': genres})
         
     if request.method == 'GET':
-        print(request.GET)
         min_year = None
         max_year = None
         min_rate = None

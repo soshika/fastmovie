@@ -7,7 +7,8 @@ urlpatterns = [
     path('about/', views.AboutPageView.as_view(), name='about'),
     path('privacy/', views.PrivacyPageView.as_view(), name='privacy'),
     path('contact/', views.contact_view, name='contact'),
-    path('explore/', views.explore_movies_view, name='explore-movies'),
+    path('explore/<int:page>/', views.explore_movies_view, name='explore'),
+    path('explore/top', views.explore_top_movies_view, name='explore-movies'),
     path('detail/<str:movie_name>/<str:movie_year>/', views.movie_detail, name='movie-detail'),
     path('search/', views.search_view, name='search')
 ]
