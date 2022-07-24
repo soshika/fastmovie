@@ -181,7 +181,13 @@
 									<ul class="card__meta">
 										<li><span>Director:</span><a href="#">{{ movie.director }}</a> </li>
 										<li><span>Cast:</span><a href="#">{{ movie.actors }}</a> </li>
-										<li><span>Genre:</span> <a href="#">{{ movie.genre }}</a></li>
+										<li>
+											<span class="card__category">
+												{% for g in movie.genre %}
+													<a href="{% url 'explore-genre' genre=g page=1 %}">{{ g }}</a>
+												{% endfor %}
+											</span>
+										</li>
 										<li><span>Release year:</span> {{ movie.year }}</li>
 										<li><span>Running time:</span> {{ movie.runtime}}</li>
 										<li><span>Country:</span> <a href="#">{{ movie.country }}</a></li>

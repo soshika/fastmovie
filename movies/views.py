@@ -28,10 +28,16 @@ def home_page_view(request):
     trending_dict = trending_response.json()
     trending = trending_dict['body']
 
+    for movie in trending:
+        g = movie['genre']
+        movie['genre'] = g.split(',')
+
     for t in trending:
         if t['imdbRating'] == 'N/A':
             t['imdbRating'] = 0.0
         t['imdbRating'] = float(t['imdbRating'])
+
+    
 
     return render(request, 'index.html', {'trending': trending, 'countries': countries, 'genres': genres})
 
@@ -82,6 +88,10 @@ def movie_detail(request, movie_name, movie_year):
     response = requests.post(rel_endpoint + 'movies/review/list', json=data)
     reviews_response = response.json()
     reviews = reviews_response['body']
+
+    
+    g = movie['genre']
+    movie['genre'] = g.split(',')
 
     if request.method == 'POST':
         title = request.POST['title'] or None
@@ -159,6 +169,10 @@ def explore_movies_view(request, page):
         t['imdbRating'] = float(t['imdbRating'])
 
     
+    for movie in explore:
+        g = movie['genre']
+        movie['genre'] = g.split(',')
+    
     # TODO: should dynamically fill it
     prev_page = page
     if prev_page > 1 :
@@ -169,6 +183,34 @@ def explore_movies_view(request, page):
         next_page += 1
 
     page_cnt = 9
+
+    return render(request, 'movie-list.html', {'movies': explore, 'current_page': page, 'prev_page': prev_page, 'next_page': next_page, 'cnt': range(1, page_cnt)})
+
+def explore_genre_movies_view(request, genre, page):
+    data = {'genre': genre.strip(), 'from': page*24-24+1, 'to': page*24}
+    
+    explore_response = requests.post(dev_endpoint + 'movies/explore', json=data)
+    explore_response_json = explore_response.json()
+    explore = explore_response_json['body']
+
+    for movie in explore:
+        g = movie['genre']
+        movie['genre'] = g.split(',')
+
+    for t in explore:
+        if t['imdbRating'] == 'N/A':
+            t['imdbRating'] = 0.0
+        t['imdbRating'] = float(t['imdbRating'])
+
+    prev_page = page
+    if prev_page > 1 :
+        prev_page -= 1
+
+    next_page = page
+    if next_page < 8:
+        next_page += 1
+
+    page_cnt = 3
 
     return render(request, 'movie-list.html', {'movies': explore, 'current_page': page, 'prev_page': prev_page, 'next_page': next_page, 'cnt': range(1, page_cnt)})
 
@@ -192,6 +234,10 @@ def search_view(request):
                 if movie['imdbRating'] == 'N/A':
                     movie['imdbRating'] = 0.0
                 movie['imdbRating'] = float(movie['imdbRating'])
+            
+            for movie in movies:
+                g = movie['genre']
+                movie['genre'] = g.split(',')
             return render(request, 'search.html', {'movies': movies, 'countries': countries, 'genres': genres})
         
     if request.method == 'GET':
@@ -232,6 +278,10 @@ def search_view(request):
             if movie['imdbRating'] == 'N/A':
                 movie['imdbRating'] = 0.0
             movie['imdbRating'] = float(movie['imdbRating'])
+
+        for movie in movies:
+            g = movie['genre']
+            movie['genre'] = g.split(',')
         
         return render(request, 'search.html', {'movies': movies, 'countries': countries, 'genres': genres})
         

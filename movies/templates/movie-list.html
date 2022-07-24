@@ -306,8 +306,9 @@
                                 <div class="card__content">
                                     <h3 class="card__title"><a href="{% url 'movie-detail' movie_name=movie.title movie_year=movie.year %}">{{ movie.title }}</a></h3>
                                     <span class="card__category">
-                                        <a href="#">{{ movie.genre }}</a>
-
+										{% for g in movie.genre %}
+                                        	<a href="{% url 'explore-genre' genre=g page=1 %}">{{ g }}</a>
+										{% endfor %}
                                     </span>
                                 </div>
                             </div>
