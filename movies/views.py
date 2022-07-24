@@ -262,7 +262,7 @@ def explore_director_movies_view(request, director):
 
 def explore_country_movies_view(request, country):
     data = {'country': country.strip()}
-    explore_response = requests.post(dev_endpoint + 'movies/explore', json=data)
+    explore_response = requests.post(rel_endpoint + 'movies/explore', json=data)
     explore_response_json = explore_response.json()
     explore = explore_response_json['body']
 
