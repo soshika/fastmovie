@@ -63,7 +63,8 @@ def movie_detail(request, movie_name, movie_year):
             if 'quality' not in link:
                 quality = 'N/A'
             else:
-                quality = link['quality']
+                # quality = link['quality']
+                quality = '720p'
             
             links_section.append({'quality': quality, 'size': size, 'link': fix_link})
 
