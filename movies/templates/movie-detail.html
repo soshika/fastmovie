@@ -189,15 +189,20 @@
 										</li>
 										<li><span>Cast:</span><a href="#">{{ movie.actors }}</a> </li>
 										<li>
-											<span class="card__category">
-												{% for g in movie.genre %}
-													<a href="{% url 'explore-genre' genre=g page=1 %}">{{ g }}</a>
-												{% endfor %}
-											</span>
+											<span>Genres:</span>
+											{% for g in movie.genre %}
+												<a href="{% url 'explore-genre' genre=g page=1 %}">{{ g }}</a>
+											{% endfor %}
 										</li>
 										<li><span>Release year:</span> {{ movie.year }}</li>
 										<li><span>Running time:</span> {{ movie.runtime}}</li>
-										<li><span>Country:</span> <a href="#">{{ movie.country }}</a></li>
+										<li>
+											<span>Country:</span>
+											{% for c in movie.country %}
+												<a href="{% url 'explore-country' country=c %}">{{ c }}</a>
+											{% endfor%}
+											
+										</li>
 									</ul>
 									<div class="card__description">
 									{{ movie.plot }}
