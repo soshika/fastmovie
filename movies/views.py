@@ -1,5 +1,4 @@
 import json
-from tkinter.messagebox import NO
 import urllib.request as ur
 
 import requests
@@ -162,6 +161,10 @@ def search_view(request):
             response = requests.post(rel_endpoint + 'movies/search', json=data)
             search_response = response.json()
             movies = search_response['body']
+            for movie in movies:
+                if movie['imdbRating'] == 'N/A':
+                    movie['imdbRating'] = 0.0
+                movie['imdbRating'] = float(movie['imdbRating'])
             return render(request, 'search.html', {'movies': movies, 'countries': countries, 'genres': genres})
         
     if request.method == 'GET':
@@ -198,6 +201,11 @@ def search_view(request):
         response = requests.post(rel_endpoint + 'movies/search', json=data)
         search_response = response.json()
         movies = search_response['body']
+
+        for movie in movies:
+            if movie['imdbRating'] == 'N/A':
+                movie['imdbRating'] = 0.0
+            movie['imdbRating'] = float(movie['imdbRating'])
         
         return render(request, 'search.html', {'movies': movies, 'countries': countries, 'genres': genres})
         
