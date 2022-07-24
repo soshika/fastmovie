@@ -149,7 +149,7 @@ def explore_top_movies_view(request):
 
 def explore_movies_view(request, page):
     data = {'from': page*24-24+1, 'to': page*24}
-    explore_response = requests.post(dev_endpoint + 'movies/explore', json=data)
+    explore_response = requests.post(rel_endpoint + 'movies/explore', json=data)
     explore_response_json = explore_response.json()
     explore = explore_response_json['body']
 
