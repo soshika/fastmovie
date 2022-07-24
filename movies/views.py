@@ -77,8 +77,7 @@ def movie_detail(request, movie_name, movie_year):
     except Exception as err:
         print(err)
 
-    # print(links_section)
-    #
+
     data = {'cnt': 10}
     response = requests.post(rel_endpoint + 'movies/suggestion', json=data)
     suggestion_response = response.json()
@@ -189,7 +188,7 @@ def explore_movies_view(request, page):
 def explore_genre_movies_view(request, genre, page):
     data = {'genre': genre.strip(), 'from': page*24-24+1, 'to': page*24}
     
-    explore_response = requests.post(dev_endpoint + 'movies/explore', json=data)
+    explore_response = requests.post(rel_endpoint + 'movies/explore', json=data)
     explore_response_json = explore_response.json()
     explore = explore_response_json['body']
 
