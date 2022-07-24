@@ -187,7 +187,13 @@
 											{% endfor %}
 											
 										</li>
-										<li><span>Cast:</span><a href="#">{{ movie.actors }}</a> </li>
+										<li>
+											<span>Cast:</span>
+											{% for actor in movie.actors%}
+												<a href="{% url 'explore-actor' actor=actor %}">{{ actor }}</a> 
+											{% endfor %}
+											
+										</li>
 										<li>
 											<span>Genres:</span>
 											{% for g in movie.genre %}

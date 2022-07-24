@@ -9,6 +9,7 @@ urlpatterns = [
     path('contact/', views.contact_view, name='contact'),
     path('explore/<int:page>/', views.explore_movies_view, name='explore'),
     path('explore/country/<str:country>/', views.explore_country_movies_view, name='explore-country'),
+    path('explore/actor/<str:actor>/', views.explore_actor_movies_view, name='explore-actor'),
     path('explore/director/<str:director>/', views.explore_director_movies_view, name='explore-director'),
     path('explore/genre/<str:genre>/<int:page>/', views.explore_genre_movies_view, name='explore-genre'),
     path('explore/top', views.explore_top_movies_view, name='explore-movies'),

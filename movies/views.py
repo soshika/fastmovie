@@ -96,6 +96,9 @@ def movie_detail(request, movie_name, movie_year):
     g = movie['genre']
     movie['genre'] = g.split(',')
 
+    ca = movie['actors']
+    movie['actors'] = ca.split(',')
+
     if request.method == 'POST':
         title = request.POST['title'] or None
         message = request.POST['message'] or None
@@ -288,6 +291,37 @@ def explore_country_movies_view(request, country):
     page_cnt = 1
 
     return render(request, 'movie-list.html', {'movies': explore, 'current_page': page, 'prev_page': prev_page, 'next_page': next_page, 'cnt': range(1, page_cnt)})
+
+
+def explore_actor_movies_view(request, actor):
+    data = {'cast': actor.strip()}
+    explore_response = requests.post(rel_endpoint + 'movies/explore', json=data)
+    explore_response_json = explore_response.json()
+    explore = explore_response_json['body']
+
+    for movie in explore:
+        g = movie['genre']
+        movie['genre'] = g.split(',')
+
+    for t in explore:
+        if t['imdbRating'] == 'N/A':
+            t['imdbRating'] = 0.0
+        t['imdbRating'] = float(t['imdbRating'])
+
+    page = 1
+
+    prev_page = page
+    if prev_page > 1 :
+        prev_page -= 1
+
+    next_page = page
+    if next_page < 8:
+        next_page += 1
+
+    page_cnt = 1
+
+    return render(request, 'movie-list.html', {'movies': explore, 'current_page': page, 'prev_page': prev_page, 'next_page': next_page, 'cnt': range(1, page_cnt)})
+
 
 def search_view(request):
     genres_response = requests.get(rel_endpoint + 'movies/genres-list')
