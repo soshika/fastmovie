@@ -179,7 +179,14 @@
 							<div class="col-12 col-md-8 col-lg-9 col-xl-7">
 								<div class="card__content">
 									<ul class="card__meta">
-										<li><span>Director:</span><a href="#">{{ movie.director }}</a> </li>
+										
+										<li>
+											<span>Director:</span>
+											{% for director in movie.director%}
+												<a href="{% url 'explore-director' director=director%}">{{ director }}</a> 
+											{% endfor %}
+											
+										</li>
 										<li><span>Cast:</span><a href="#">{{ movie.actors }}</a> </li>
 										<li>
 											<span class="card__category">
