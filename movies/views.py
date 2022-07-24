@@ -232,7 +232,7 @@ def explore_director_movies_view(request, director):
 
     print(data)
     
-    explore_response = requests.post(dev_endpoint + 'movies/explore', json=data)
+    explore_response = requests.post(rel_endpoint + 'movies/explore', json=data)
     explore_response_json = explore_response.json()
     explore = explore_response_json['body']
 
